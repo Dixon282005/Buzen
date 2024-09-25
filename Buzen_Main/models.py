@@ -16,15 +16,17 @@ class Client(models.Model):
         unique=True,
         validators=[RegexValidator(regex=r'^\+?1?\d{9,15}$', message="El número de teléfono debe estar en el formato: '+999999999'. Hasta 15 dígitos permitidos.")]
     )
-    create_date = models.DateTimeField(auto_now_add=True)
+    born_date = models.DateField(auto_now=False, auto_now_add=False)
+    user_id = models.ForeignKey(Client, on_delete=models.CASCADE)
     def __str__(self):
         return f"{self.name} {self.surname}"
+
 
 class User(models.Model):
     email = models.EmailField(max_length=255, unique=True)
     username = models.CharField(max_length=20, unique=True)
     password = models.CharField(max_length=20)
-    user_id = models.ForeignKey(Client, on_delete=models.CASCADE)
+    
     
     def __str__(self):
         return self.username
