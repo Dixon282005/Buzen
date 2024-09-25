@@ -3,6 +3,12 @@
   margin: 0 auto;
   padding: 2rem;
   text-align: center;
+}
+
+* {
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');
+font-family: "Monserrat";
+}
 
 .logo {
   height: 6em;
@@ -38,4 +44,19 @@
 
 .read-the-docs {
   color: #888;
+}
+
+a {
+padding: 10px 30px 10px 30px;
+font-size: 15px;
+font-weight: bolder !important;
+color: var(--white) !important;
+background:var(--blue);
+border-radius: 2rem;
+margin: 20px;
+}
+
+nav {
+background: var(--black);
+display: flex;
 }
