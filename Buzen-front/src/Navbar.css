@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');
+
 #root {
   max-width: 1280px;
   margin: 0 auto;
@@ -6,8 +8,7 @@
 }
 
 * {
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');
-font-family: "Monserrat";
+font-family: "Montserrat";
 }
 
 .logo {
@@ -46,17 +47,58 @@ font-family: "Monserrat";
   color: #888;
 }
 
-a {
-padding: 10px 30px 10px 30px;
-font-size: 15px;
-font-weight: bolder !important;
+.session{
+padding: 10px 35px 5px 35px;
+font-size: 20px;
+letter-spacing: -0rem;
+font-weight: 900 !important;
 color: var(--white) !important;
 background:var(--blue);
 border-radius: 2rem;
-margin: 20px;
+}
+
+.log{
+margin: 10px 10px 10px 20px;
+}
+
+.sign{
+margin: 10px 20px 10px 10px;
+}
+
+.bar{
+padding: 15px 30px 15px 12px;
+margin: 20px 0 20px 20px;
+border-radius: 2rem;
+width: 20rem;
+}
+
+.bar:focus{
+outline: none
+}
+
+.lens{
+width: 50px;
+height: 50px;
+background:var(--blue);
+}
+
+.lenBehind{
+display: none;
 }
 
 nav {
 background: var(--black);
 display: flex;
+align-items: center; /* Centrar verticalmente */
+    justify-content: center; /* Centrar horizontalmente */
+}
+
+.appLogo{
+margin: 0 40px 0 0;
+padding: 6px 5px 5px 5px;
+background: var(--white);
+border-radius: 2rem;
+font-size: 22px;
+font-weight: 900 !important;
+color: var(--black) !important;
 }

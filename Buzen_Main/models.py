@@ -17,7 +17,7 @@ class Client(models.Model):
         validators=[RegexValidator(regex=r'^\+?1?\d{9,15}$', message="El número de teléfono debe estar en el formato: '+999999999'. Hasta 15 dígitos permitidos.")]
     )
     born_date = models.DateField(auto_now=False, auto_now_add=False)
-    user_id = models.ForeignKey(Client, on_delete=models.CASCADE)
+    user_id = models.ForeignKey('Client', on_delete=models.CASCADE)
     def __str__(self):
         return f"{self.name} {self.surname}"
 
