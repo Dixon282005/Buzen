@@ -4,9 +4,18 @@ import './colors.css'
 
 const Navbar = () => (
     <nav>
-<a href="lobby">LOG IN</a>  
-<a href="lobby">SIGN UP</a>  
+<form>
+<img class="lens" color="red" src="search-svgrepo-com.svg"/>
+<button class="lenBehind" type="submit"></button>
+<input class="bar" placeholder="Search"/>
+</form>
+<a class="log session" href="lobby">LOG IN</a>  
+<a class="sign session" href="lobby">SIGN UP</a>
+<a class="appLogo">
+BU
+</a>  
 </nav>
+
 );
 
 export default Navbar
