@@ -1,14 +1,9 @@
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');
-
 #root {
-  max-width: 1280px;
+  /*max-width: 1280px;*/
+width: 100%;
   margin: 0 auto;
   padding: 2rem;
   text-align: center;
-}
-
-* {
-font-family: "Montserrat";
 }
 
 .logo {
@@ -48,7 +43,7 @@ font-family: "Montserrat";
 }
 
 .session{
-padding: 10px 35px 5px 35px;
+padding: 5px 35px 5px 35px;
 font-size: 20px;
 letter-spacing: -0rem;
 font-weight: 900 !important;
@@ -76,29 +71,62 @@ width: 20rem;
 outline: none
 }
 
-.lens{
-width: 50px;
-height: 50px;
-background:var(--blue);
+.magnifyingGlass{
+width: 40px;
+height: 40px;
+fill:var(--white);
+display: grid;
+justify-content: center; /* Centra el contenido dentro del div */
+  align-items: center; /* Centra verticalmente */
+
 }
 
-.lenBehind{
+.send{
 display: none;
 }
 
 nav {
 background: var(--black);
+width: 105.8%;
+position: relative;
+top: -48px;
+left: -48px;
 display: flex;
 align-items: center; /* Centrar verticalmente */
-    justify-content: center; /* Centrar horizontalmente */
+justify-content: center; /* Centrar horizontalmente */
+}
+
+.chevron{
+z-index: 3;
+position: absolute;
+left: 50px;
+top: 25px;
+width: 50px;
+height: 50px;
+display: flex;
+}
+
+.options{
+border-radius: 50px;
+position: absolute;
+left: -180px;
+top: -08px;
+background: var(--white);
+width: 300px;
+height: 100%;
+z-index: 2;
 }
 
 .appLogo{
 margin: 0 40px 0 0;
-padding: 6px 5px 5px 5px;
+padding: 6.3px 6px 5.5px 7px;
 background: var(--white);
 border-radius: 2rem;
 font-size: 22px;
 font-weight: 900 !important;
 color: var(--black) !important;
+}
+
+label{
+cursor: pointer;
 }
