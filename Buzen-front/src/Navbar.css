@@ -6,6 +6,11 @@ width: 100%;
   text-align: center;
 }
 
+.mainBar{
+display: flex;
+height: 100px;
+}
+
 .logo {
   height: 6em;
   padding: 1.5em;
@@ -28,47 +33,46 @@ width: 100%;
   }
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
-}
-
-.card {
-  padding: 2em;
-}
-
-.read-the-docs {
-  color: #888;
-}
-
 .session{
 padding: 5px 35px 5px 35px;
 font-size: 20px;
-letter-spacing: -0rem;
 font-weight: 900 !important;
 color: var(--white) !important;
 background:var(--blue);
 border-radius: 2rem;
 }
 
+.mini{
+padding: 0px 16px 0px 16px !important;
+margin: -5px 20px 10px 20px;
+font-weight: 500 !important;
+font-size: 18px !important;
+}
+
 .log{
-margin: 10px 10px 10px 20px;
+margin: 30px 10px 30px 20px;
 }
 
 .sign{
-margin: 10px 20px 10px 10px;
+margin: 30px 20px 30px 10px;
 }
 
 .bar{
 padding: 15px 30px 15px 12px;
 margin: 20px 0 20px 20px;
 border-radius: 2rem;
-width: 20rem;
+background: var(--white);
+width: 22rem;
 }
 
 .bar:focus{
 outline: none
+}
+
+.genres{
+display: flex;
+justify-content: start;
+margin: 0px 0px 0px 50px;
 }
 
 .magnifyingGlass{
@@ -77,8 +81,8 @@ height: 40px;
 fill:var(--white);
 display: grid;
 justify-content: center; /* Centra el contenido dentro del div */
-  align-items: center; /* Centra verticalmente */
-
+align-items: center; /* Centra verticalmente */
+margin: 30px 0 0 0;
 }
 
 .send{
@@ -92,6 +96,7 @@ position: relative;
 top: -48px;
 left: -48px;
 display: flex;
+flex-direction: column;
 align-items: center; /* Centrar verticalmente */
 justify-content: center; /* Centrar horizontalmente */
 }
@@ -104,12 +109,13 @@ top: 25px;
 width: 50px;
 height: 50px;
 display: flex;
+background: var(--white);
 }
 
 .options{
 border-radius: 50px;
 position: absolute;
-left: -180px;
+left: -185px;
 top: -08px;
 background: var(--white);
 width: 300px;
@@ -117,14 +123,13 @@ height: 100%;
 z-index: 2;
 }
 
+.zero{
+margin: 0px;
+}
+
 .appLogo{
-margin: 0 40px 0 0;
-padding: 6.3px 6px 5.5px 7px;
-background: var(--white);
-border-radius: 2rem;
-font-size: 22px;
-font-weight: 900 !important;
-color: var(--black) !important;
+width: 100px;
+height: 100px;
 }
 
 label{
