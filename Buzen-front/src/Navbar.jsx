@@ -4,7 +4,7 @@ import './Navbar.css'
 import './colors.css'
 
 const Navbar = () => (
-<div>
+<div id="navBar">
 <Helmet>
         <title>Buzen</title>
 	<link rel="icon" type="image/svg+xml" href="Buzen-logo.png" />

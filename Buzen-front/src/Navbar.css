@@ -40,6 +40,19 @@ font-weight: 900 !important;
 color: var(--white) !important;
 background:var(--blue);
 border-radius: 2rem;
+
+	@media (width <= 1210px ) {
+	font-size: 18px;
+	}
+	
+	@media (width <= 950px) {
+	font-size: 16px !important;
+	}
+	
+	@media (width <= 800px) {
+	padding: 5px 25px 5px 25px;
+	font-size: 14px !important;
+	}
 }
 
 .mini{
@@ -47,22 +60,72 @@ padding: 0px 16px 0px 16px !important;
 margin: -5px 20px 10px 20px;
 font-weight: 500 !important;
 font-size: 18px !important;
+
+	@media (width <= 1210px ) {
+	padding: 2.5px 16px 0px 16px !important;
+	font-size: 16px !important;
+	}
+
+	@media (width <= 950px) {
+	padding: 0px 16px 0px 16px !important;
+	margin: -5px 5px 10px 5px;
+	font-size: 14px !important;
+	}
+
+	@media (width <= 800px) {
+	padding: 0px 16px 0px 16px !important;
+	margin: -5px 5px 10px 5px;
+	font-size: 12px !important;
+	}
 }
 
 .log{
 margin: 30px 10px 30px 20px;
+
+	@media (width <= 1210px ) {
+	margin: 32px 10px 32px 20px;
+	}
+
+	@media (width <= 950px) {
+	margin: 34px 10px 34px 20px;
+	}
+	
+	@media (width <= 800px) {
+	margin: 36px 6px 34px 20px;
+	}
 }
 
 .sign{
 margin: 30px 20px 30px 10px;
+
+	@media (width <= 1210px ) {
+	margin: 32px 10px 32px 20px;
+	}
+	
+	@media (width <= 950px) {
+	margin: 34px 10px 34px 20px;
+	}
+
+	@media (width <= 800px) {
+	margin: 36px 6px 34px 18px;
+	}
 }
 
 .bar{
-padding: 15px 30px 15px 12px;
-margin: 20px 0 20px 20px;
+padding: 15px 0px 15px 12px;
+margin: 20px 0 20px 10px;
 border-radius: 2rem;
 background: var(--white);
 width: 22rem;
+
+	@media (width <= 1210px) {
+	width: 14rem;
+	}
+	@media (width <= 950px) {
+	margin: 25px 0 20px 10px;
+	width: 8rem;
+	height: 20px;
+	}
 }
 
 .bar:focus{
@@ -73,6 +136,9 @@ outline: none
 display: flex;
 justify-content: start;
 margin: 0px 0px 0px 50px;
+
+	@media (width <= 950px) {
+	}
 }
 
 .magnifyingGlass{
@@ -91,20 +157,22 @@ display: none;
 
 nav {
 background: var(--black);
-width: 105.8%;
 position: relative;
 top: -48px;
-left: -48px;
+left: 45px;
 display: flex;
 flex-direction: column;
 align-items: center; /* Centrar verticalmente */
 justify-content: center; /* Centrar horizontalmente */
+
+	@media (width <= 800) {
+	}
 }
 
 .chevron{
 z-index: 3;
 position: absolute;
-left: 50px;
+left: 20px;
 top: 25px;
 width: 50px;
 height: 50px;
@@ -115,7 +183,7 @@ background: var(--white);
 .options{
 border-radius: 50px;
 position: absolute;
-left: -185px;
+left: -215px;
 top: -08px;
 background: var(--white);
 width: 300px;
@@ -130,6 +198,12 @@ margin: 0px;
 .appLogo{
 width: 100px;
 height: 100px;
+
+	@media (width <= 800px) {
+	width: 80px;
+	height: 80px;
+	margin: 10px 0 0 0;
+	}
 }
 
 label{
