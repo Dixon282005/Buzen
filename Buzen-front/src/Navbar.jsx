@@ -3,15 +3,27 @@ import { useState } from 'react'
 import './Navbar.css'
 import './colors.css'
 
-const Navbar = () => (
+const Navbar = () => { 
+
+const [isActive, setIsActive] = useState(false);
+
+    const toggleBar = () => {
+        setIsActive(!isActive);
+    };
+
+const rafa = "hola soy rafa"
+console.log(rafa)
+return (
 <div id="navBar">
 <Helmet>
         <title>Buzen</title>
 	<link rel="icon" type="image/svg+xml" href="Buzen-logo.png" />
         <meta name="description" content="New way to hear music" />
 </Helmet>
+<label onClick={toggleBar} for="options">
 <svg class="chevron" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><path d="M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l192 192c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L77.3 256 246.6 86.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-192 192z"/></svg>
-<section class="options">
+</label>
+<section class={`options optionsOut ${isActive ? "optionsIn" : ""}`}>
 </section>
 <section>
 </section>
@@ -41,5 +53,6 @@ const Navbar = () => (
 </div>
 );
 
+} 
 export default Navbar
 
