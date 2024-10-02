@@ -6,53 +6,14 @@ width: 100%;
   text-align: center;
 }
 
+
 .mainBar{
 display: flex;
 height: 100px;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
-}
-
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-.session{
-padding: 5px 35px 5px 35px;
-font-size: 20px;
-font-weight: 900 !important;
-color: var(--white) !important;
-background:var(--blue);
-border-radius: 2rem;
-
-	@media (width <= 1210px ) {
-	font-size: 18px;
-	}
-	
-	@media (width <= 950px) {
-	font-size: 16px !important;
-	}
-	
-	@media (width <= 800px) {
-	padding: 5px 25px 5px 25px;
-	font-size: 14px !important;
-	}
+.margen{
+margin: 0 0 0 20px;
 }
 
 .mini{
@@ -60,22 +21,44 @@ padding: 0px 16px 0px 16px !important;
 margin: -5px 20px 10px 20px;
 font-weight: 500 !important;
 font-size: 18px !important;
+ 
+         @media (width <= 1210px ) {
+         padding: 2.5px 16px 0px 16px !important;
+         font-size: 16px !important;
+         }
+
+         @media (width <= 980px) {
+         padding: 0px 16px 0px 16px !important;
+         margin: -5px 5px 10px 5px;
+         font-size: 14px !important;
+         }
+
+         @media (width <= 820px) {
+         padding: 0px 16px 0px 16px !important;
+         margin: -5px 5px 10px 5px;
+         font-size: 12px !important;
+         }
+ }
+
+
+.session{
+padding: 5px 35px 5px 35px;
+font-size: 20px;
+color: var(--white);
+background:var(--blue);
+border-radius: 2rem;
 
 	@media (width <= 1210px ) {
-	padding: 2.5px 16px 0px 16px !important;
+	font-size: 18px;
+	}
+	
+	@media (width <= 980px) {
 	font-size: 16px !important;
 	}
-
-	@media (width <= 950px) {
-	padding: 0px 16px 0px 16px !important;
-	margin: -5px 5px 10px 5px;
+	
+	@media (width <= 820px) {
+	padding: 5px 25px 5px 25px;
 	font-size: 14px !important;
-	}
-
-	@media (width <= 800px) {
-	padding: 0px 16px 0px 16px !important;
-	margin: -5px 5px 10px 5px;
-	font-size: 12px !important;
 	}
 }
 
@@ -86,11 +69,11 @@ margin: 30px 10px 30px 20px;
 	margin: 32px 10px 32px 20px;
 	}
 
-	@media (width <= 950px) {
+	@media (width <= 980px) {
 	margin: 34px 10px 34px 20px;
 	}
 	
-	@media (width <= 800px) {
+	@media (width <= 820px) {
 	margin: 36px 6px 34px 20px;
 	}
 }
@@ -102,11 +85,11 @@ margin: 30px 20px 30px 10px;
 	margin: 32px 10px 32px 20px;
 	}
 	
-	@media (width <= 950px) {
+	@media (width <= 980px) {
 	margin: 34px 10px 34px 20px;
 	}
 
-	@media (width <= 800px) {
+	@media (width <= 820px) {
 	margin: 36px 6px 34px 18px;
 	}
 }
@@ -121,7 +104,7 @@ width: 22rem;
 	@media (width <= 1210px) {
 	width: 14rem;
 	}
-	@media (width <= 950px) {
+	@media (width <= 980px) {
 	margin: 25px 0 20px 10px;
 	width: 8rem;
 	height: 20px;
@@ -184,27 +167,35 @@ display: flex;
 background: var(--white);
 }
 
-.options{
+.sidebar{
 border-radius: 50px;
 position: absolute;
-left: -300px;
+left: -320px;
 top: -08px;
 background: var(--white);
-width: 400px;
+width: 450px;
 height: 100%;
 z-index: 2;
 }
 
-
-.optionsOut{
-transition: transform 1.5s;
-transform: translateX(0%);
+.out{
+transition: transform 1s ease;
+transform: translateX(-40px);
 }
 
+.chevronOut{
+transition: transform 1s ease;
+transform: translateX(0px);
+}
 
-.optionsIn{
-transition: transform 1.5s;
-transform: translateX(50%);
+.sidebarIn{
+transition: transform 1s ease;
+transform: translateX(60%);
+}
+
+.labelIn{
+transition: transform 1s ease;
+transform: translateX(600%);
 }
 
 .zero{
@@ -222,6 +213,93 @@ height: 100px;
 	}
 }
 
-label{
+
+label, a {
 cursor: pointer;
+}
+
+.gear{
+width:40px;
+height: 40px;
+    margin: 40px 40px 40px 60px;
+}
+
+.stats{
+display: flex;
+flex-direction: row;
+margin: -28px 0 0 10px;
+}
+
+.follow-ers {
+display: flex;
+flex-direction: column;
+font-size: 17px;
+}
+
+.follow-ers:first-of-type {
+margin: 0 0 0 30%;
+}
+
+.follow-ers:last-of-type {
+margin: 0 0 0 20px;
+}
+
+.pill{
+color: var(--black);
+background:var(--blue);
+margin: 0 5% 0 5%;
+border-radius: 20px;
+}
+
+.thick-text{
+font-weight: 900;
+}
+
+.userImage{
+width: 200px;
+height: 200px;
+}
+
+.option-menu{
+display:flex;
+flex-wrap: wrap;
+}
+
+.content {
+display: flex;
+flex-direction: column;
+text-align: justify;
+}
+
+.content dt {
+margin: 10px 0px 10px 25%;
+display: flex;
+}
+
+dt a {
+font-size: 1.20rem;
+}
+
+.icon-margin{
+margin: 4px 10px 0 0;
+}
+
+.principal {
+width: 30px;
+height: 30px;
+}
+
+.heart{
+width: 30px;
+height: 30px;
+}
+
+.circle-user{
+width: 30px;
+height: 30px;
+}
+
+footer{
+margin: 100px 0 0 0;
+font-size: 17px;
 }
