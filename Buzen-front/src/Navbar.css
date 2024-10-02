@@ -221,7 +221,7 @@ cursor: pointer;
 .gear{
 width:40px;
 height: 40px;
-    margin: 40px 40px 40px 60px;
+margin: 35px 20px 40px 60px;
 }
 
 .stats{
@@ -244,11 +244,17 @@ margin: 0 0 0 30%;
 margin: 0 0 0 20px;
 }
 
+.userSpace{
+margin: -30px 0 30px 120px !important;
+}
+
 .pill{
 color: var(--black);
 background:var(--blue);
-margin: 0 5% 0 5%;
 border-radius: 20px;
+width: 200px;
+height: 38px;
+margin: 34px 0 0 0;
 }
 
 .thick-text{
