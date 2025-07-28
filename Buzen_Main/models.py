@@ -1,152 +1,188 @@
 from django.db import models
 from django.core.validators import RegexValidator
-from django.core.validators import MinValueValidator, MaxValueValidator
+from django.contrib.auth.models import AbstractUser
 import datetime
-from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin,  Group, Permission
 
-# Create your models here.
+class CustomUser(AbstractUser):
+    first_name = None
+    last_name = None
+    is_artist = models.BooleanField(default=False)
+    avatar = models.ImageField(upload_to='avatars/', null=True, blank=True)
+    is_blocked = models.BooleanField(default=False)
+    client = models.OneToOneField('Client', on_delete=models.CASCADE, null=True, blank=True)
+
+    def __str__(self):
+        return self.username
 
 
 class Client(models.Model):
     name = models.CharField(max_length=15)
-    surname = models.CharField(max_length=15)
-    age = models.PositiveSmallIntegerField(
-        validators=[MinValueValidator(10), MaxValueValidator(99)]
-    )
+    last_name = models.CharField(max_length=15)
+    born_date = models.DateField()
     country = models.CharField(max_length=20)
     phone_number = models.CharField(
         max_length=15,
-        unique=True,
-        validators=[RegexValidator(regex=r'^\+?1?\d{9,15}$', message="El número de teléfono debe estar en el formato: '+999999999'. Hasta 15 dígitos permitidos.")]
-    )
-    born_date = models.DateField(auto_now=False, auto_now_add=False, default=datetime.date.today)
-    user_id = models.ForeignKey('User', on_delete=models.CASCADE, default = 1 )
-
-    def __str__(self):
-        return f"{self.name} {self.surname}"
-
-"""
-class User(AbstractUser):
-    email = models.EmailField(max_length=255, unique=True)
-    username = models.CharField(max_length=20, unique=True)
-    password = models.CharField(max_length=20)
-    is_active = models.BooleanField(default=True)
-    first_name = None
-    last_name = None
-    groups = models.ManyToManyField(
-        Group,
-        related_name='buzen_user_set', 
-        blank=True,
-        help_text='The groups this user belongs to.',
-        related_query_name='user',
-    )
-    user_permissions = models.ManyToManyField(
-        Permission,
-        related_name='buzen_user_permissions_set',  
-        blank=True,
-        help_text='Specific permissions for this user.',
-        related_query_name='user',
-    )
-    
-    def __str__(self):
-        return self.username
-    """
-    
-    
-class CustomUserManager(BaseUserManager):
-    def create_user(self, email, username, password=None, **extra_fields):
-        if not email:
-            raise ValueError('The Email field must be set')
-        email = self.normalize_email(email)
-        user = self.model(email=email, username=username, **extra_fields)
-        user.set_password(password)
-        user.save(using=self._db)
-        return user
-
-    def create_superuser(self, email, username, password=None, **extra_fields):
-        extra_fields.setdefault('is_staff', True)
-        extra_fields.setdefault('is_superuser', True)
-
-        return self.create_user(email, username, password, **extra_fields)
-
-class User(AbstractBaseUser, PermissionsMixin):
-    email = models.EmailField(max_length=255, unique=True)
-    username = models.CharField(max_length=20, unique=True)
-    is_active = models.BooleanField(default=True)
-    is_staff = models.BooleanField(default=False)
-    groups = models.ManyToManyField(
-        Group,
-        related_name='buzen_user_set', 
-        blank=True,
-        help_text='The groups this user belongs to.',
-        related_query_name='user',
-    )
-    user_permissions = models.ManyToManyField(
-        Permission,
-        related_name='buzen_user_permissions_set',  
-        blank=True,
-        help_text='Specific permissions for this user.',
-        related_query_name='user',
+        validators=[
+            RegexValidator(
+                regex=r'^\+?1?\d{9,15}$',
+                message="Número de teléfono inválido. Debe tener entre 9 y 15 dígitos."
+            )
+        ]
     )
 
-    objects = CustomUserManager()
 
-    USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['username']
+class Artist(models.Model):
+    client = models.OneToOneField(Client, on_delete=models.CASCADE)
+    artist_name = models.CharField(max_length=100, unique=True)
+    bio = models.TextField(blank=True, null=True)
+    website = models.URLField(blank=True, null=True)
+    image_url = models.URLField(blank=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
 
-    def __str__(self):
-        return self.email
 
-    
-    
-    
-    
-    
-    
-    
+class Gender(models.Model):
+    name = models.CharField(max_length=50, unique=True)
+
+
+class Album(models.Model):
+    name = models.CharField(max_length=100)
+    artist = models.ForeignKey(Artist, on_delete=models.CASCADE)
+    release_date = models.DateField(blank=True, null=True)
+
+
+class Music(models.Model):
+    title = models.CharField(max_length=100)
+    artist = models.ForeignKey(Artist, on_delete=models.CASCADE)
+    album = models.ForeignKey(Album, on_delete=models.SET_NULL, null=True, blank=True)
+    duration = models.IntegerField(blank=True, null=True)
+    gender = models.ForeignKey(Gender, on_delete=models.SET_NULL, null=True, blank=True)
+    release_date = models.DateField(blank=True, null=True)
+
+
 class Likes(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    #music_id = models.PositiveIntegerField()
+    user = models.ForeignKey('Buzen_Main.CustomUser', on_delete=models.CASCADE)
+    music = models.ForeignKey(Music, on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
 
-    def __str__(self):
-        return f"User {self.user_id} likes Music {self.music_id}"
+    class Meta:
+        unique_together = ('user', 'music')
+
 
 class MusicHistory(models.Model):
-    #music_id = models.PositiveIntegerField()
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    play_date = models.DateTimeField()
+    user = models.ForeignKey('Buzen_Main.CustomUser', on_delete=models.CASCADE)
+    music = models.ForeignKey(Music, on_delete=models.CASCADE)
+    play_date = models.DateTimeField(auto_now_add=True)
 
-    def __str__(self):
-        return f"User {self.user_id} played Music {self.music_id} on {self.play_date}"
+
+class SearchHistory(models.Model):
+    user = models.ForeignKey('Buzen_Main.CustomUser', on_delete=models.CASCADE)
+    search_term = models.CharField(max_length=255)
+    search_date = models.DateTimeField(auto_now_add=True)
+
 
 class FavoriteGender(models.Model):
-    #gender_id = models.PositiveIntegerField()
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey('Buzen_Main.CustomUser', on_delete=models.CASCADE)
+    gender = models.ForeignKey(Gender, on_delete=models.CASCADE)
 
-    def __str__(self):
-        return f"User {self.user_id} likes Gender {self.gender_id}"
+    class Meta:
+        unique_together = ('user', 'gender')
+
 
 class FavoriteArtist(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    artist_id = models.PositiveIntegerField()
+    user = models.ForeignKey('Buzen_Main.CustomUser', on_delete=models.CASCADE)
+    artist = models.ForeignKey(Artist, on_delete=models.CASCADE)
 
-    def __str__(self):
-        return f"User {self.user_id} likes Artist {self.artist_id}"
+    class Meta:
+        unique_together = ('user', 'artist')
+
 
 class Playlist(models.Model):
-    playlist_name = models.CharField(max_length=30, unique=True)
+    user = models.ForeignKey('Buzen_Main.CustomUser', on_delete=models.CASCADE)
+    playlist_name = models.CharField(max_length=30)
     create_date = models.DateTimeField(auto_now_add=True)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    #music_id = models.PositiveIntegerField()
 
-    def __str__(self):
-        return self.playlist_name
+    class Meta:
+        unique_together = ('user', 'playlist_name')
+
+
+class PlaylistMusic(models.Model):
+    playlist = models.ForeignKey(Playlist, on_delete=models.CASCADE)
+    music = models.ForeignKey(Music, on_delete=models.CASCADE)
+    position = models.IntegerField()
+
+    class Meta:
+        unique_together = ('playlist', 'music')
+
+
+class Library(models.Model):
+    user = models.ForeignKey('Buzen_Main.CustomUser', on_delete=models.CASCADE)
+    music = models.ForeignKey(Music, on_delete=models.CASCADE)
+    added_date = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ('user', 'music')
+
+
+class Queue(models.Model):
+    user = models.ForeignKey('Buzen_Main.CustomUser', on_delete=models.CASCADE)
+    music = models.ForeignKey(Music, on_delete=models.CASCADE)
+    position = models.IntegerField()
+    added_date = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ('user', 'music')
+
 
 class LogIn(models.Model):
-    log_date = models.DateTimeField()
-    platform = models.CharField(max_length=255)
-    dispositive = models.CharField(max_length=255)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey('Buzen_Main.CustomUser', on_delete=models.CASCADE)
+    log_date = models.DateTimeField(auto_now_add=True)
+    platform = models.CharField(max_length=50)
+    device = models.CharField(max_length=50)
 
-    def __str__(self):
-        return f"User {self.user_id} logged in on {self.log_date} using {self.platform}"
+
+class Subscription(models.Model):
+    user = models.ForeignKey('Buzen_Main.CustomUser', on_delete=models.CASCADE)
+    type = models.CharField(max_length=50)
+    start_date = models.DateField()
+    end_date = models.DateField(blank=True, null=True)
+    is_active = models.BooleanField(default=True)
+
+
+class Follow(models.Model):
+    follower = models.ForeignKey('Buzen_Main.CustomUser', on_delete=models.CASCADE, related_name='following')
+    following = models.ForeignKey('Buzen_Main.CustomUser', on_delete=models.CASCADE, related_name='followers')
+    follow_date = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ('follower', 'following')
+
+
+class Notification(models.Model):
+    user = models.ForeignKey('Buzen_Main.CustomUser', on_delete=models.CASCADE)
+    message = models.TextField()
+    is_read = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+
+class BlockedCustomUser(models.Model):
+    user = models.ForeignKey('Buzen_Main.CustomUser', on_delete=models.CASCADE, related_name='blocker')
+    blocked_user = models.ForeignKey('Buzen_Main.CustomUser', on_delete=models.CASCADE, related_name='blocked')
+    block_date = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ('user', 'blocked_user')
+
+
+class Statistics(models.Model):
+    user = models.ForeignKey('Buzen_Main.CustomUser', on_delete=models.CASCADE)
+    total_listens = models.IntegerField(default=0)
+    total_likes = models.IntegerField(default=0)
+    last_listen_date = models.DateTimeField(blank=True, null=True)
+
+
+class Chat(models.Model):
+    sender = models.ForeignKey('Buzen_Main.CustomUser', on_delete=models.CASCADE, related_name='sent_messages')
+    receiver = models.ForeignKey('Buzen_Main.CustomUser', on_delete=models.CASCADE, related_name='received_messages')
+    message = models.TextField()
+    seen = models.BooleanField(default=False)
+    sent_at = models.DateTimeField(auto_now_add=True)
