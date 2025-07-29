@@ -16,10 +16,10 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from Buzen_Main import views ## importamos las vistas del  proyecto principal
+
 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path("home/", include("Buzen_Main.urls"))
+    path("api/", include('Buzen_Main.urls'))
 ]

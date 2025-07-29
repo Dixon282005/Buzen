@@ -1,17 +1,18 @@
 from django.urls import path
-from . import views #El punto hace referencia  a la carpeta actual
-from rest_framework_simplejwt.views import (
-    TokenObtainPairView,
-    TokenRefreshView,
-)
+from .views import LoginView, RegisterView, Home #El punto hace referencia  a la carpeta actual
+from django.urls import path, include
 
 
 urlpatterns = [
     #path('', views.index, name='index'),
     #path('', views.index, name='lobby'),
-    path('login/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
-    path('login/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
-    
+    path('register/', RegisterView.as_view(), name='register'),
+    path('login/', LoginView.as_view(), name='login'),
+    path('home/', Home.as_view, name='home'),
+
 ]
+
+
+
 
 
