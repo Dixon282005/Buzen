@@ -41,7 +41,7 @@ const SongCard = ({ song, isCurrent, onPlay, isLoading = false, variant = "defau
     >
       <div className="relative aspect-square w-full mb-3">
         {!imageLoaded && (
-          <div className="absolute inset-0 bg-gray-700 rounded animate-pulse"></div>
+          <div className="absolute inset-0 bg-gray-400 rounded animate-pulse"></div>
         )}
         <img
           src={song.image || '/default-song-cover.jpg'}
