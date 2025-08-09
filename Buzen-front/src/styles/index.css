@@ -2,20 +2,8 @@
 
 
 :root {
-  /* Modo oscuro (default) */
-  --color-deep-black: #050008;
-  --color-dark-purple: #17012b;
-  --color-text-primary: #fff;
-  --color-text-secondary: #d1b3ff;
-  --color-accent: #a019b4;
-  --gradient-primary: linear-gradient(45deg, #edc5f3, #d1b3ff);
-  --text-shadow: 0 0 10px rgba(160, 25, 180, 0.7);
-  --hero-bg: transparent;
-  --color-card-project: rgba(255, 255, 255, 0.1);
-}
-
-[data-theme="light"] {
-  --color-deep-black: #faf5ff;
+ 
+   --color-deep-black: #faf5ff;
   --color-dark-purple: #e6dbff;
   --color-text-primary: #1c0030;
   --color-text-secondary: #6b1b8d;
@@ -24,4 +12,17 @@
   --text-shadow: 0 0 6px rgba(123, 31, 162, 0.25);
   --hero-bg: rgba(240, 230, 255, 0.35);
   --color-card-project: rgba(255, 255, 255, 0.7);
+}
+
+.dark {
+   --color-deep-black: #050008;
+  --color-dark-purple: #17012b;
+  --color-text-primary: #fff;
+  --color-text-secondary: #d1b3ff;
+  --color-accent: #a019b4;
+  --gradient-primary: linear-gradient(45deg, #edc5f3, #d1b3ff);
+  --text-shadow: 0 0 10px rgba(160, 25, 180, 0.7);
+  --hero-bg: transparent;
+  --color-card-project: rgba(255, 255, 255, 0.1);
+ 
 }

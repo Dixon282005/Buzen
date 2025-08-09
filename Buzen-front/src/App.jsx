@@ -2,7 +2,7 @@ import { useState } from 'react'
 import Nav from './components/Header.jsx';
 import Dashboard from './components/Dashboard.jsx';
 import Footer from './components/Footer.jsx';
-
+import Player from './components/Player.jsx';
 
 function App() {
   return (
@@ -18,6 +18,7 @@ function App() {
         <Nav />
         <Dashboard />
 
+      <Player/>
       <Footer />
       </div>
     </>
