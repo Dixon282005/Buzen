@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import SongCard from "./SongCard";
+import SongCard from "../components/SongCard.jsx";
 
 function Dashboard() {
   const [currentSongId, setCurrentSongId] = useState(null);

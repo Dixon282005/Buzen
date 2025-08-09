@@ -1,5 +1,6 @@
 import { FaSearch } from 'react-icons/fa';
 import Darkmode from "./Darkmode";
+import { Link } from "react-router-dom";
 
 function Nav() {
   return (
@@ -31,21 +32,43 @@ function Nav() {
         </div>
 
         {/* Menú + Darkmode */}
-        <div className="flex justify-end items-center gap-6 w-full md:w-auto order-2 md:order-3">
-          <ul className="flex gap-6 md:gap-8 list-none m-0 p-0">
-            {["Home", "Premium", "Sign in", "Sign Up"].map((item) => (
-              <li key={item}>
-                <a
-                  href="#"
-                  className="flex items-center gap-2 text-[var(--color-text-primary)] hover:text-[var(--color-accent)] font-bold transition-colors text-sm md:text-base whitespace-nowrap"
-                >
-                  <span>{item}</span>
-                </a>
-              </li>
-            ))}
-          </ul>
-          <Darkmode />
-        </div>
+    <div className="flex justify-end items-center gap-6 w-full md:w-auto order-2 md:order-3">
+  <ul className="flex gap-6 md:gap-8 list-none m-0 p-0">
+    <li>
+      <Link
+        to="/"
+        className="flex items-center gap-2 text-[var(--color-text-primary)] hover:text-[var(--color-accent)] font-bold transition-colors text-sm md:text-base whitespace-nowrap"
+      >
+        <span>Home</span>
+      </Link>
+    </li>
+    <li>
+      <Link
+        to="/premium"
+        className="flex items-center gap-2 text-[var(--color-text-primary)] hover:text-[var(--color-accent)] font-bold transition-colors text-sm md:text-base whitespace-nowrap"
+      >
+        <span>Premium</span>
+      </Link>
+    </li>
+    <li>
+      <Link
+        to="/login"
+        className="flex items-center gap-2 text-[var(--color-text-primary)] hover:text-[var(--color-accent)] font-bold transition-colors text-sm md:text-base whitespace-nowrap"
+      >
+        <span>Sign in</span>
+      </Link>
+    </li>
+    <li>
+      <Link
+        to="/register"
+        className="flex items-center gap-2 text-[var(--color-text-primary)] hover:text-[var(--color-accent)] font-bold transition-colors text-sm md:text-base whitespace-nowrap"
+      >
+        <span>Sign Up</span>
+      </Link>
+    </li>
+  </ul>
+  <Darkmode />
+</div>
       </nav>
     </header>
   );
