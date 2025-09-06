@@ -25,7 +25,6 @@ function AppLayout() {
           <Route path="/login" element={<Login />} />
         </Routes>
       </main>
-      {!hideLayout && <Player />}
       {!hideLayout && <Footer />}
     </div>
   );

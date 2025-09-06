@@ -56,7 +56,7 @@ const SongCard = ({ song, isCurrent, onPlay, isLoading = false, variant = "defau
           <button
             onClick={(e) => {
               e.stopPropagation();
-              onPlay(song.id);
+              onPlay(song);
             }}
             className="absolute bottom-2 right-2 bg-green-500 hover:bg-green-600 text-white rounded-full w-10 h-10 flex items-center justify-center transition-transform duration-200 hover:scale-110"
             aria-label="Reproducir"

@@ -1,57 +1,81 @@
-import { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import SongCard from "../components/SongCard.jsx";
+import Player from '../components/Player.jsx';
 
 function Dashboard() {
+  const [recommendedSongs, setRecommendedSongs] = useState([]);
   const [currentSongId, setCurrentSongId] = useState(null);
+  const JAMENDO_CLIENT_ID = import.meta.env.VITE_JAMENDO_CLIENT_ID; 
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [isPlaying, setIsPlaying] = useState(false);
+const audioObjectRef = useRef(null);
+const audioRef = useRef(null);
 
-  // Datos de ejemplo para probar
-  const librarySongs = [
-    {
-      id: 'lib1',
-      title: 'Save Your Tears',
-      artist: 'The Weeknd',
-      image: 'https://i.scdn.co/image/ab67616d00001e02c59199eeb6b5a55c8a4c4c09'
-    },
-    {
-      id: 'lib2',
-      title: 'Starboy',
-      artist: 'The Weeknd, Daft Punk',
-      image: 'https://i.scdn.co/image/ab67616d00001e02a9f6c04ba168640b48aa5795'
+  useEffect(() => {
+    // URL de la API de Jamendo para obtener las canciones más populares
+    const url = `https://api.jamendo.com/v3.0/tracks/?client_id=${JAMENDO_CLIENT_ID}&limit=10&order=popularity_week&audioformat=mp31`;
+
+    fetch(url)
+      .then(response => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.json();
+      })
+      .then(data => {
+        if (data.headers.status === 'success') {
+          // Mapeamos los datos de la API para que coincidan con nuestro formato
+          const formattedSongs = data.results.map(track => ({
+            id: track.id,
+            title: track.name,
+            artist: track.artist_name,
+            image: track.image,
+            audio: track.audio 
+          }));
+          setRecommendedSongs(formattedSongs);
+          setLoading(false);
+        } else {
+          setError(data.headers.error_message);
+          setLoading(false);
+        }
+      })
+      .catch(e => {
+        setError(e.message);
+        setLoading(false);
+      });
+  }, []);
+
+const handlePlay = (songId, song) => {
+  // 1. Si no hay un objeto de audio, lo creamos
+  if (!audioRef.current) {
+    audioRef.current = new Audio();
+    // Agregamos los listeners solo una vez
+    audioRef.current.onplay = () => setIsPlaying(true);
+    audioRef.current.onpause = () => setIsPlaying(false);
+    audioRef.current.onended = () => setIsPlaying(false);
+  }
+
+  // 2. Si la canción que queremos reproducir es la misma que ya está sonando...
+  if (songId === currentSongId) {
+    // ...la pausamos si está sonando, o la reanudamos si está en pausa
+    if (audioRef.current.paused) {
+      audioRef.current.play();
+    } else {
+      audioRef.current.pause();
     }
-  ];
-
-  const recommendedSongs = [
-    {
-      id: 'rec1',
-      title: 'Blinding Lights',
-      artist: 'The Weeknd',
-      image: 'https://i.scdn.co/image/ab67616d00001e02a935e865d7f0b1110a8ef024'
-    },
-    {
-      id: 'rec2',
-      title: 'Take My Breath',
-      artist: 'The Weeknd',
-      image: 'https://i.scdn.co/image/ab67616d00001e02e0b60c608586d88251b6a1e8'
-    },
-    {
-      id: 'rec3',
-      title: 'Die For You',
-      artist: 'The Weeknd',
-      image: 'https://i.scdn.co/image/ab67616d00001e02d5f5e99c9f0e4a8a7e4a6d4e'
-    },
-    {
-      id: 'rec4',
-      title: 'Moth To A Flame',
-      artist: 'Swedish House Mafia, The Weeknd',
-      image: 'https://i.scdn.co/image/ab67616d00001e02f9a4a7a0a6b0e9e0b4f4e4d4'
-    }
-  ];
-
-  const handlePlay = (songId) => {
+  } else {
+    // 3. Si es una canción nueva, cambiamos la fuente y la reproducimos
     setCurrentSongId(songId);
-    console.log('Reproduciendo canción:', songId);
-    // Aquí iría tu lógica de reproducción real
-  };
+    audioRef.current.src = songId.audio;
+    audioRef.current.load(); // Le decimos al navegador que cargue la nueva fuente
+    audioRef.current.play().catch(e => {
+        if (e.name !== 'AbortError') {
+            console.error('Error de reproducción:', e);
+        }
+    });
+  }
+};
 
   return (
     <div className="h-screen w-screen p-3 overflow-hidden text-white ">
@@ -61,7 +85,7 @@ function Dashboard() {
         <div className="w-1/4 bg-[var(--color-dark-purple)] rounded-xl p-4 overflow-y-auto">
           <h2 className="text-xl font-bold mb-4">Tu Biblioteca</h2>
           <div className="space-y-3">
-            {librarySongs.map((song) => (
+            {recommendedSongs.map((song) => (
               <SongCard
                 key={`lib-${song.id}`}
                 song={song}
@@ -91,6 +115,15 @@ function Dashboard() {
           </div>
         </div>
       </div>
+            {currentSongId && <Player 
+            song={currentSongId} 
+            isPlaying={isPlaying} 
+            setIsPlaying={setIsPlaying}
+            audioRef={audioRef}
+            recommendedSongs={recommendedSongs}
+			setCurrentSongId={setCurrentSongId}
+            />}
+      
     </div>
   );
 }
