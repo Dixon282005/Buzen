@@ -9,6 +9,7 @@ function Dashboard() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [isPlaying, setIsPlaying] = useState(false);
+  const [progress, setProgress] = useState(0); // Estado para el progreso
 const audioObjectRef = useRef(null);
 const audioRef = useRef(null);
 
@@ -46,19 +47,42 @@ const audioRef = useRef(null);
       });
   }, []);
 
+const handleLoadedMetadata = () => {
+  // Aseguramos que la duración total de la canción se actualice
+  setProgress(0); // Reiniciamos el progreso
+};
+
+const handleTimeUpdate = () => {
+  if (audioRef.current) {
+    // Calculamos el porcentaje de progreso
+    const newProgress = (audioRef.current.currentTime / audioRef.current.duration) * 100;
+    setProgress(newProgress);
+  }
+};
+
+const handleSeek = (event) => {
+  if (audioRef.current) {
+    const newTime = (event.target.value / 100) * audioRef.current.duration;
+    audioRef.current.currentTime = newTime;
+    setProgress(event.target.value); 
+  }
+};
+
 const handlePlay = (songId, song) => {
   // 1. Si no hay un objeto de audio, lo creamos
   if (!audioRef.current) {
     audioRef.current = new Audio();
-    // Agregamos los listeners solo una vez
+    
     audioRef.current.onplay = () => setIsPlaying(true);
     audioRef.current.onpause = () => setIsPlaying(false);
     audioRef.current.onended = () => setIsPlaying(false);
+    audioRef.current.ontimeupdate = handleTimeUpdate;
+	audioRef.current.onloadedmetadata = handleLoadedMetadata;
   }
 
   // 2. Si la canción que queremos reproducir es la misma que ya está sonando...
   if (songId === currentSongId) {
-    // ...la pausamos si está sonando, o la reanudamos si está en pausa
+    
     if (audioRef.current.paused) {
       audioRef.current.play();
     } else {
@@ -68,7 +92,7 @@ const handlePlay = (songId, song) => {
     // 3. Si es una canción nueva, cambiamos la fuente y la reproducimos
     setCurrentSongId(songId);
     audioRef.current.src = songId.audio;
-    audioRef.current.load(); // Le decimos al navegador que cargue la nueva fuente
+    audioRef.current.load();
     audioRef.current.play().catch(e => {
         if (e.name !== 'AbortError') {
             console.error('Error de reproducción:', e);
@@ -122,6 +146,8 @@ const handlePlay = (songId, song) => {
             audioRef={audioRef}
             recommendedSongs={recommendedSongs}
 			setCurrentSongId={setCurrentSongId}
+			progress={progress}
+			handleSeek={handleSeek}
             />}
       
     </div>

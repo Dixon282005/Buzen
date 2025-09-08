@@ -1,7 +1,7 @@
 import React, { useRef, useEffect, useState } from 'react';
 import { FaPlayCircle, FaPauseCircle, FaStepBackward, FaStepForward } from "react-icons/fa";
 
-function Player({ song, isPlaying, setIsPlaying, audioRef, recommendedSongs, setCurrentSongId }) {
+function Player({ song, isPlaying, setIsPlaying, audioRef, recommendedSongs, setCurrentSongId, progress, handleSeek }) {
   const togglePlay = () => {
     if (audioRef.current) {
       if (audioRef.current.paused) {
@@ -92,6 +92,8 @@ function Player({ song, isPlaying, setIsPlaying, audioRef, recommendedSongs, set
           type="range"
           min="0"
           max="100"
+          value={progress}
+          onChange={handleSeek}
           className="w-full h-1 rounded-lg cursor-pointer"
           style={{
             accentColor: 'var(--color-accent)'
