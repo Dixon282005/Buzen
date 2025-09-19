@@ -6,7 +6,9 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.permissions import IsAuthenticated
 from .serializers import RegisterSerializer, LoginSerializer, ProfileInfo, UserLikes
 from .services.jamendo import get_tracks
-from .models import Likes
+from .services.get_or_create_music import get_or_create_music
+from .models import Likes, Music
+
 
 
 class RegisterView(APIView):
@@ -56,34 +58,58 @@ class LikeView(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request):
+        """Listar los likes del usuario"""
         likes = Likes.objects.filter(user=request.user)
         serializer = UserLikes(likes, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     def post(self, request):
-        data = request.data.copy()
-        data["user"] = request.user.id  # Forzamos que siempre sea el usuario autenticado
-        serializer = UserLikes(data=data)
+        """
+        Dar like a una canción.
+        Se puede enviar:
+          - music_id: canción local
+          - jamendo_id: canción externa de Jamendo
+        """
+        music_id = request.data.get("music_id")
+        jamendo_id = request.data.get("jamendo_id")
 
-        if serializer.is_valid():
-            like, created = Likes.objects.get_or_create(
-                user=request.user, music=serializer.validated_data["music"]
-            )
-            if not created:
-                return Response({"message": "You already liked this track"}, status=status.HTTP_200_OK)
+        music = None
+        if music_id:
+            music = Music.objects.filter(id=music_id).first()
+        elif jamendo_id:
+            music = get_or_create_music(jamendo_id)
 
-            return Response(UserLikes(like).data, status=status.HTTP_201_CREATED)
+        if not music:
+            return Response({"error": "Music not found"}, status=status.HTTP_404_NOT_FOUND)
 
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        like, created = Likes.objects.get_or_create(user=request.user, music=music)
+        if not created:
+            return Response({"message": "You already liked this track"}, status=status.HTTP_200_OK)
+
+        return Response(UserLikes(like).data, status=status.HTTP_201_CREATED)
 
     def delete(self, request):
+        """
+        Quitar like a una canción.
+        Se puede enviar:
+          - music_id: canción local
+          - jamendo_id: canción externa de Jamendo
+        """
         music_id = request.data.get("music_id")
-        if not music_id:
-            return Response({"error": "music_id is required"}, status=status.HTTP_400_BAD_REQUEST)
+        jamendo_id = request.data.get("jamendo_id")
 
-        try:
-            like = Likes.objects.get(user=request.user, music_id=music_id)
+        music = None
+        if music_id:
+            music = Music.objects.filter(id=music_id).first()
+        elif jamendo_id:
+            music = Music.objects.filter(jamendo_id=jamendo_id).first()
+
+        if not music:
+            return Response({"error": "Music not found"}, status=status.HTTP_404_NOT_FOUND)
+
+        like = Likes.objects.filter(user=request.user, music=music).first()
+        if like:
             like.delete()
             return Response({"message": "Like removed"}, status=status.HTTP_204_NO_CONTENT)
-        except Likes.DoesNotExist:
+        else:
             return Response({"error": "You haven't liked this track"}, status=status.HTTP_400_BAD_REQUEST)

@@ -23,7 +23,7 @@ class Client(models.Model):
 
 
 class Artist(models.Model):
-    client = models.OneToOneField(Client, on_delete=models.CASCADE)
+    client = models.OneToOneField(Client, on_delete=models.CASCADE, null=True, blank=True)
     artist_name = models.CharField(max_length=100, unique=True)
     bio = models.TextField(blank=True, null=True)
     website = models.URLField(blank=True, null=True)
@@ -42,12 +42,20 @@ class Album(models.Model):
 
 
 class Music(models.Model):
+    # Info de Jamendo
+    jamendo_id = models.CharField(max_length=50, unique=True, null=True, blank=True)  # ID de Jamendo, opcional
+    audio_url = models.URLField(blank=True, null=True)  # URL de streaming
+
+    # Info tradicional que ya tenías
     title = models.CharField(max_length=100)
-    artist = models.ForeignKey(Artist, on_delete=models.CASCADE)
+    artist = models.ForeignKey(Artist, on_delete=models.CASCADE, null=True, blank=True)
     album = models.ForeignKey(Album, on_delete=models.SET_NULL, null=True, blank=True)
-    duration = models.IntegerField(blank=True, null=True)
+    duration = models.IntegerField(blank=True, null=True)  # duración en segundos
     gender = models.ForeignKey(Gender, on_delete=models.SET_NULL, null=True, blank=True)
     release_date = models.DateField(blank=True, null=True)
+
+    def __str__(self):
+        return f"{self.title} - {self.artist.artist_name if self.artist else 'Unknown Artist'}"
 
 
 class Likes(models.Model):

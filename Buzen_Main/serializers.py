@@ -35,6 +35,7 @@ class ProfileInfo(serializers.ModelSerializer):
 
      class Meta:
         model = User
+        fields = ("username", "email", "date_joined")
         read_only_field = ("username", "email", "date_joined")
    
 
