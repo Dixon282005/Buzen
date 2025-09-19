@@ -1,7 +1,7 @@
 from django.db import models
 from django.core.validators import RegexValidator
 from django.contrib.auth.models import AbstractUser
-import datetime
+
 
 class CustomUser(AbstractUser):
     first_name = None
@@ -20,15 +20,6 @@ class Client(models.Model):
     last_name = models.CharField(max_length=15)
     born_date = models.DateField()
     country = models.CharField(max_length=20)
-    phone_number = models.CharField(
-        max_length=15,
-        validators=[
-            RegexValidator(
-                regex=r'^\+?1?\d{9,15}$',
-                message="Número de teléfono inválido. Debe tener entre 9 y 15 dígitos."
-            )
-        ]
-    )
 
 
 class Artist(models.Model):

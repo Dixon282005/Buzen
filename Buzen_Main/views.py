@@ -4,8 +4,9 @@ from rest_framework import status
 from django.contrib.auth import authenticate
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.permissions import IsAuthenticated
+from .serializers import RegisterSerializer, LoginSerializer, ProfileInfo
+from .services.jamendo import get_tracks
 
-from .serializers import RegisterSerializer, LoginSerializer
 
 class RegisterView(APIView):
     def post(self, request):
@@ -38,5 +39,20 @@ class Home (APIView):
     permission_classes = [IsAuthenticated]
     def get (self, request):
       user = request.user
-      return Response({"message": f"Bienvenido  {user.username}"}, status=status.HTTP_200_OK)
+      tracks = get_tracks(limit=5)
+      return Response ({'mesagge' : f'Bienvenido, {user}',
+                         'tracks' : tracks.get('results', [])})
 
+
+class Profile (APIView):
+    permission_classes = [IsAuthenticated]
+    def get(self, request):
+        getProfile = ProfileInfo(request.user)
+        return Response (getProfile.data)
+    
+
+class Like (APIView):
+    permission_classes = [IsAuthenticated]
+    def get(self, request):
+        getLikes = UserLikes(request.user)
+        return Response (getLikes, status= status.HTTP_200_OK)

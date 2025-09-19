@@ -3,3 +3,4 @@ __pycache__
 venv
 entorno
 db.sqlite3
+.env

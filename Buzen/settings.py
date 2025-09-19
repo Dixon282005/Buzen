@@ -12,6 +12,18 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 
 from pathlib import Path
 from datetime import timedelta
+import os
+from dotenv  import load_dotenv
+
+# Cargar archivo .env
+load_dotenv()
+
+
+# Variables de entorno
+SECRET_KEY = os.getenv("SECRET_KEY", "fallback-secret-key")
+DEBUG = os.getenv("DEBUG", "False") == "True"
+JAMENDO_CLIENT_ID = os.getenv("JAMENDO_CLIENT_ID")
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -21,11 +33,6 @@ AUTH_USER_MODEL = 'Buzen_Main.CustomUser' #Nuevo modelo
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-k#q$lif#ps-c*qdw1862c7gwg1sc_d&bs#cz$dqebn@7_^5j=q'
-
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
 
 ALLOWED_HOSTS = ["*"]
 

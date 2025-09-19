@@ -1,8 +1,10 @@
 from rest_framework import serializers
 from django.contrib.auth import get_user_model
 from django.contrib.auth.password_validation import validate_password
+from .models import Likes
 
 User = get_user_model()
+
 
 class RegisterSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True, required=True, validators=[validate_password])
@@ -28,4 +30,17 @@ class LoginSerializer(serializers.Serializer):
     password = serializers.CharField(write_only=True)
 
 
+class ProfileInfo(serializers.ModelSerializer):
+
+     class Meta:
+        model = User
+        fields = ("username", "email", "date_joined")
+   
+
+class UserLikes(serializers.ModelSerializer):
+
+    class Meta:
+        model = Likes
+        fields = ("user", "music", "created_at")
+        
     
