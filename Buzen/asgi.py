@@ -13,6 +13,7 @@ application = ProtocolTypeRouter({
     "websocket": AuthMiddlewareStack(  # Maneja WebSockets con autenticación
         URLRouter(
             Buzen_Chat.socketsurl.websocket_urlpatterns
+            
         )
     ),
 })
