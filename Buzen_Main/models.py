@@ -178,10 +178,3 @@ class Statistics(models.Model):
     total_likes = models.IntegerField(default=0)
     last_listen_date = models.DateTimeField(blank=True, null=True)
 
-
-class Chat(models.Model):
-    sender = models.ForeignKey('Buzen_Main.CustomUser', on_delete=models.CASCADE, related_name='sent_messages')
-    receiver = models.ForeignKey('Buzen_Main.CustomUser', on_delete=models.CASCADE, related_name='received_messages')
-    message = models.TextField()
-    seen = models.BooleanField(default=False)
-    sent_at = models.DateTimeField(auto_now_add=True)

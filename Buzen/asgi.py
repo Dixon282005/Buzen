@@ -1,16 +1,18 @@
-"""
-ASGI config for Buzen project.
-
-It exposes the ASGI callable as a module-level variable named ``application``.
-
-For more information on this file, see
-https://docs.djangoproject.com/en/5.1/howto/deployment/asgi/
-"""
-
 import os
-
+from channels.auth import AuthMiddlewareStack
+from channels.routing import ProtocolTypeRouter, URLRouter
 from django.core.asgi import get_asgi_application
+import Buzen_Chat.socketsurl  # nuestras rutas de WebSocket
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'Buzen.settings')
+# Indicamos el settings module
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "Buzen.settings")
 
-application = get_asgi_application()
+# Configuración principal ASGI
+application = ProtocolTypeRouter({
+    "http": get_asgi_application(),  # Maneja HTTP normal
+    "websocket": AuthMiddlewareStack(  # Maneja WebSockets con autenticación
+        URLRouter(
+            Buzen_Chat.socketsurl.websocket_urlpatterns
+        )
+    ),
+})

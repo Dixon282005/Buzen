@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     "Buzen_Main",
+    "Buzen_Chat",
     "rest_framework",
     "corsheaders",
     'rest_framework_simplejwt'

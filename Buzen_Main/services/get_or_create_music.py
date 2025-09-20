@@ -1,6 +1,7 @@
 from ..models import Music, Artist, Album, Gender
-from .jamendo import get_tracks
+from .jamendo import get_track_by_id
 from django.db import transaction
+from datetime import datetime
 
 def get_or_create_music(jamendo_id):
     """
@@ -13,11 +14,10 @@ def get_or_create_music(jamendo_id):
     if music:
         return music
 
-    # 2️⃣ Traer de Jamendo
-    tracks = get_tracks(limit=50)  # ajustar el limit según tus necesidades
-    track_data = next((t for t in tracks.get("results", []) if t["id"] == jamendo_id), None)
+    # 2️⃣ Traer solo esa canción desde Jamendo
+    track_data = get_track_by_id(jamendo_id)
     if not track_data:
-        return None  # canción no encontrada en Jamendo
+        return None  # Canción no encontrada
 
     # 3️⃣ Crear en DB de forma atómica
     with transaction.atomic():
@@ -25,7 +25,7 @@ def get_or_create_music(jamendo_id):
         artist_name = track_data.get("artist_name") or "Unknown Artist"
         artist, _ = Artist.objects.get_or_create(
             artist_name=artist_name,
-            defaults={"client": None}  # puede ser nulo
+            defaults={"client": None}
         )
 
         # Álbum
@@ -33,18 +33,27 @@ def get_or_create_music(jamendo_id):
         album = None
         if album_name:
             album, _ = Album.objects.get_or_create(
-                name=album_name,  # <-- aquí debe ser 'name', no 'album_name'
+                name=album_name,
                 artist=artist
             )
 
         # Género
-        genre_tags = track_data.get("musicinfo", {}).get("tags", [])
         genre = None
-        if genre_tags:
-            genre_name = genre_tags[0]  # tomar primer tag
+        tags = track_data.get("musicinfo", {}).get("tags", [])
+        if tags:
+            genre_name = tags[0]
             genre, _ = Gender.objects.get_or_create(name=genre_name)
 
-        # Crear la canción
+        # Fecha de lanzamiento
+        release_date = None
+        raw_date = track_data.get("releasedate")
+        if raw_date:
+            try:
+                release_date = datetime.strptime(raw_date, "%Y-%m-%dT%H:%M:%S").date()
+            except ValueError:
+                pass  # si falla el parseo, lo dejamos en None
+
+        # Crear canción
         music = Music.objects.create(
             jamendo_id=track_data["id"],
             title=track_data["name"],
@@ -52,7 +61,7 @@ def get_or_create_music(jamendo_id):
             album=album,
             duration=track_data.get("duration"),
             gender=genre,
-            release_date=track_data.get("releasedate"),
+            release_date=release_date,
             audio_url=track_data.get("audio")
         )
 
