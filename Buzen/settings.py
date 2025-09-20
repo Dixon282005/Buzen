@@ -36,6 +36,16 @@ AUTH_USER_MODEL = 'Buzen_Main.CustomUser' #Nuevo modelo
 
 ALLOWED_HOSTS = ["*"]
 
+# Channels (WebSockets)
+ASGI_APPLICATION = 'Buzen.asgi.application'
+
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels.layers.InMemoryChannelLayer",  # desarrollo
+    }
+}
+
+
 
 
 # Application definition
@@ -49,6 +59,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     "Buzen_Main",
     "Buzen_Chat",
+    "channels",   
     "rest_framework",
     "corsheaders",
     'rest_framework_simplejwt'
